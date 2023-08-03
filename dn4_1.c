@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 
 int primerjavaTabel(int* tabela1, int* tabela2, int k, int n) {
@@ -9,7 +9,7 @@ int primerjavaTabel(int* tabela1, int* tabela2, int k, int n) {
 			}
 		}
 	} else {*/
-		for (int i = k; i < n; i++) {
+		/*for (int i = k; i < n; i++) {
 			if (tabela1[i] != tabela2[0 + i - k]) {
 				return 0;
 			}
@@ -47,4 +47,48 @@ int main() {
 			return 0;
 		}
 	}
+}*/
+
+//boljša rešitev (avgust 2023):
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+	int n = 0;
+	scanf("%d", &n);
+
+	int* tabela1 = (int*) calloc(n, sizeof(int));
+	int* tabela2 = (int*) calloc(n, sizeof(int));
+
+	for (int i = 0; i < n; i++) {
+		int clen = 0;
+		scanf("%d", &clen);
+		tabela1[i] = clen;
+	}
+
+	for (int i = 0; i < n; i++) {
+		int clen = 0;
+		scanf("%d", &clen);
+		tabela2[i] = clen;
+	}
+
+	for (int k = 0; k < n; k++) {
+		int nasli = 1;
+		for (int i = k; i < n; i++) {
+			if (tabela1[i] != tabela2[i - k]) {
+				nasli = 0;
+				break;
+			}
+		}
+
+		if (nasli) {
+			printf("%d\n", k);
+			return 0;
+		}
+	}
+
+	free(tabela1);
+	free(tabela2);
+	return 0;
 }
