@@ -24,6 +24,31 @@ int visinaDrevesa(int** drevo, int i, int visina) {
 	}
 }
 
+//optimizirano (avgust 2023):
+/*int visinaDrevesa(int** drevo, int indeks) {
+	if (drevo[indeks][0] == 0 && drevo[indeks][1] == 0) {
+		if (indeks == 0) {
+			return 1;
+		}
+	}
+
+	int visinaL = 1;
+	if (drevo[indeks][0] != 0) {
+		visinaL += visinaDrevesa(drevo, drevo[indeks][0] + indeks);
+	}
+
+	int visinaD = 1;
+	if (drevo[indeks][1] != 0) {
+		visinaD += visinaDrevesa(drevo, drevo[indeks][1] + indeks);
+	}
+	
+	if (visinaL > visinaD) {
+		return visinaL;
+	} else {
+		return visinaD;
+	}
+}*/
+
 int main() {
 	int n = 0;
 	scanf("%d", &n);
