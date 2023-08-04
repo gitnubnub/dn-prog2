@@ -65,5 +65,12 @@ int main() {
 
 	int visina = visinaDrevesa(tabela, 0, 0) - 1;
 	printf("%d\n", visina);
+
+	//bi bilo dobro še sprostiti tabelo:
+	/*for (int i = 0; i < n; i++) {
+		free(drevo[i]);
+	}
+
+	free(drevo);*/
 	return 0;
 }
