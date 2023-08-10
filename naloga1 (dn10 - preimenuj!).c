@@ -6,7 +6,7 @@
 
 #include "naloga1.h"
 
-int neurejeno(VO** tabela, int velikost) {
+/*int neurejeno(VO** tabela, int velikost) {
     for (int i = 0; i < velikost - 1; i++) {
         if (tabela[i] -> ocena < tabela[i + 1] -> ocena) {
             return 1;
@@ -69,6 +69,58 @@ VO** opravili(Student** studentje, int stStudentov, char* predmet, int* stVO) {
     }
 
     return uredi(opravljeni, *stVO);
+}*/
+
+//optimizirana rešitev:
+
+int urejeno(VO** opravljeni, int velikost) {
+    for (int i = 0; i < velikost - 1; i++) {
+        if (opravljeni[i] -> ocena < opravljeni[i + 1] -> ocena || (opravljeni[i] -> ocena == opravljeni[i + 1] -> ocena && opravljeni[i] -> vpisna > opravljeni[i + 1] -> vpisna)) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+VO** opravili(Student** studentje, int stStudentov, char* predmet, int* stVO) {
+    int stOpravljenih = 0;
+    for (int i = 0; i < stStudentov; i++) {
+        for (int j = 0; j < studentje[i] -> stPO; j++) {
+            if (!strcmp(studentje[i] -> po[j].predmet, predmet) && studentje[i] -> po[j].ocena > 5) {
+                stOpravljenih++;
+            }
+        }
+    }
+
+    *stVO = stOpravljenih;
+    VO** opravljeni = (VO**) calloc(stOpravljenih, sizeof(VO*));
+    int indeks = 0;
+    for (int i = 0; i < stStudentov; i++) {
+        for (int j = 0; j < studentje[i] -> stPO; j++) {
+            if (!strcmp(studentje[i] -> po[j].predmet, predmet) && studentje[i] -> po[j].ocena > 5) {
+                opravljeni[indeks] = (VO*) calloc(1, sizeof(VO));
+                opravljeni[indeks] -> vpisna = studentje[i] -> vpisna;
+                opravljeni[indeks] -> ocena = studentje[i] -> po[j].ocena;
+                indeks++;
+            }
+        }
+    }
+
+    while (!urejeno(opravljeni, stOpravljenih)) {
+        for (int i = 0; i < stOpravljenih - 1; i++) {
+            if (opravljeni[i] -> ocena < opravljeni[i + 1] -> ocena || (opravljeni[i] -> ocena == opravljeni[i + 1] -> ocena && opravljeni[i] -> vpisna > opravljeni[i + 1] -> vpisna)) {
+                int tempVpisna = opravljeni[i] -> vpisna;
+                int tempOcena = opravljeni[i] -> ocena;
+                opravljeni[i] -> vpisna = opravljeni[i + 1] -> vpisna;
+                opravljeni[i] -> ocena = opravljeni[i + 1] -> ocena;
+                opravljeni[i + 1] -> vpisna = tempVpisna;
+                opravljeni[i + 1] -> ocena = tempOcena;
+            }
+        }
+    }
+
+    return opravljeni;
 }
 
 #ifndef test
