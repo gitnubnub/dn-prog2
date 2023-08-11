@@ -1,43 +1,41 @@
-//ne dela za testni primer 7 (samo vodilni presledki in po en oklepaj na vrstico)
-
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int main(int argc, char* argv[]) {
-	FILE* inp = fopen(argv[1], "r");
-	FILE* out = fopen(argv[2], "w");
+	FILE* input = fopen(argv[1], "r");
+	FILE* output = fopen(argv[2], "w");
 
-	int stPresledkov = 0;
-	char* niz = (char*) calloc(1001, sizeof(char));
-	while (fgets(niz, 1000, inp) != NULL) {
-		int prebraniPresledki = 0;
-		if (niz[0] == ' ') {
-			for (int i = 0; niz[i] == ' '; i++) {
-				prebraniPresledki++;
-			}
+	int z = 0;
+	int trenutni = fgetc(input);
+
+	while (trenutni != EOF) {
+		while (trenutni == ' ') {
+			trenutni = fgetc(input);
 		}
 
-		int len = strlen(niz);
-		if (stPresledkov && niz[prebraniPresledki] == '}') {
-			stPresledkov -= 4;
+		if (trenutni == '}' && z >= 4) {
+			z -= 4;
+		}
+		int zadnji = trenutni;
+		
+		for (int i = 1; i <= z; i++) {
+			fputc(' ', output);
 		}
 
-		if (stPresledkov) {
-			for (int i = 1; i <= stPresledkov; i++) {
-				fprintf(out, " ");
-			}
+		while (trenutni != '\n') {
+			fputc(trenutni, output);
+			zadnji = trenutni;
+			trenutni = fgetc(input);
 		}
 
-		fprintf(out, "%s", niz + prebraniPresledki);
-
-		if (niz[len - 2] == '{') {
-			stPresledkov += 4;
+		if (zadnji == '{') {
+			z += 4;
 		}
+
+		fputc(trenutni, output);
+		trenutni = fgetc(input);
 	}
 
-	free(niz);
-	fclose(inp);
-	fclose(out);
+	fclose(input);
+	fclose(output);
 	return 0;
 }
