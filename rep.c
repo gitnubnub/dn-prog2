@@ -1,5 +1,3 @@
-//5. testni primer ne dela (segmentation fault)
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,7 +32,7 @@ int main(int argc, char* argv[]) {
 		printf("%s", izpis[i]);
 	}
 
-	for (int i = 0; i <= n; i++) {
+	for (int i = 0; i < n; i++) {
 		free(izpis[i]);
 	}
 	free(izpis);
